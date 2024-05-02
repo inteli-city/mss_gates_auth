@@ -11,7 +11,7 @@ class GetAllUsersUsecase:
 
     def __call__(self, requester_role: ROLE) -> List[User]:
 
-        if requester_role != ROLE.COLLABORATOR:
+        if requester_role != ROLE.ADMIN_COLLABORATOR:
             raise ForbiddenAction("Usuário não tem permissão para criar usuários")
         
         users_response = self.repo.get_all_users()

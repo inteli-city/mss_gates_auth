@@ -11,7 +11,7 @@ class Test_ListUsersInGroupUsecase:
     def test_list_users_in_group_usecase(self):
         repo = UserRepositoryMock()
         usecase = ListUsersInGroupUsecase(repo)
-        users_response = usecase(group=GROUPS.GAIA, request_user_role=ROLE.COLLABORATOR, request_user_groups=[GROUPS.GAIA])
+        users_response = usecase(group=GROUPS.GAIA, request_user_role=ROLE.ADMIN_COLLABORATOR, request_user_groups=[GROUPS.GAIA])
 
         assert len(users_response) == 1
     

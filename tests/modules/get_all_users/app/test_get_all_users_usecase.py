@@ -10,7 +10,7 @@ class Test_GetAllUsersUsecase:
     def test_get_all_users_usecase(self):
         repo = UserRepositoryMock()
         usecase = GetAllUsersUsecase(repo)
-        users_response = usecase(requester_role=ROLE.COLLABORATOR)
+        users_response = usecase(requester_role=ROLE.ADMIN_COLLABORATOR)
 
         assert len(users_response) == 3
     
@@ -19,4 +19,4 @@ class Test_GetAllUsersUsecase:
         usecase = GetAllUsersUsecase(repo)
 
         with pytest.raises(ForbiddenAction):
-            usecase(requester_role=ROLE.ADMIN)
+            usecase(requester_role=ROLE.ADMIN_USER)

@@ -17,7 +17,7 @@ class Test_UserRepositoryMock:
         assert type(users[0]) == User
         assert users[0].email == 'teste@gmail.com'
         assert users[0].name == 'Gabriel Godoy'
-        assert users[0].role == ROLE.COLLABORATOR
+        assert users[0].role == ROLE.ADMIN_COLLABORATOR
         assert users[0].groups == [GROUPS.GAIA]
 
     def test_get_user_by_email(self):
@@ -47,7 +47,7 @@ class Test_UserRepositoryMock:
         assert type(users[0]) == User
         assert users[0].email == 'teste@gmail.com'
         assert users[0].name == 'Gabriel Godoy'
-        assert users[0].role == ROLE.COLLABORATOR
+        assert users[0].role == ROLE.ADMIN_COLLABORATOR
         assert users[0].groups == [GROUPS.GAIA]
     
     def test_update_user(self):

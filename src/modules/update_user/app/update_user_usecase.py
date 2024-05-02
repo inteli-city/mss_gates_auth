@@ -15,7 +15,7 @@ class UpdateUserUsecase:
 
     def __call__(self, new_user_data: dict, user_email: str, groups: List[GROUPS], enabled: bool, requester_role: ROLE) -> User:
 
-        if requester_role != ROLE.COLLABORATOR:
+        if requester_role != ROLE.ADMIN_COLLABORATOR:
             raise ForbiddenAction("Usuário não tem permissão para alterar usuários")
 
         old_user = self.repo.get_user_by_email(user_email)

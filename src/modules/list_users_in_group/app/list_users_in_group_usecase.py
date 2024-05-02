@@ -13,7 +13,7 @@ class ListUsersInGroupUsecase:
 
     def __call__(self, group: GROUPS, request_user_role: ROLE, request_user_groups: List[GROUPS]) -> List[User]:
         
-        if request_user_role != ROLE.COLLABORATOR and request_user_role != ROLE.ADMIN:
+        if request_user_role != ROLE.ADMIN_COLLABORATOR and request_user_role != ROLE.ADMIN_USER:
             raise ForbiddenAction("Usuário não tem permissão para buscar usuários em grupos")               
 
         if group not in request_user_groups:

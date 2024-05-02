@@ -14,7 +14,7 @@ class UserRepositoryMock(IUserRepository):
 
     def __init__(self):
         self.users = [
-            User(user_id="1", email='teste@gmail.com', name='Gabriel Godoy', role=ROLE.COLLABORATOR, groups=[GROUPS.GAIA], enabled=True, user_status=USER_STATUS.CONFIRMED),
+            User(user_id="1", email='teste@gmail.com', name='Gabriel Godoy', role=ROLE.ADMIN_COLLABORATOR, groups=[GROUPS.GAIA], enabled=True, user_status=USER_STATUS.CONFIRMED),
             User(user_id="2", email='teste2@gmail.com', name='Gabriel Godoy', role=ROLE.COLLABORATOR, enabled=True, user_status=USER_STATUS.UNCONFIRMED),
             User(user_id="3",email='teste3@gmail.com', name='Gabriel Godoy', role=ROLE.USER, enabled=True, user_status=USER_STATUS.FORCE_CHANGE_PASSWORD),
         ]

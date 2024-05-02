@@ -13,9 +13,9 @@ class Test_CreateUseUsecase:
         repo = UserRepositoryMock()
         usecase = CreateUserUsecase(repo)
         
-        user_response = usecase(email='teste@gmail3.com', name='Gabriel Godoy', role=ROLE.COLLABORATOR, groups=[GROUPS.GAIA], requester_role=ROLE.ADMIN)
+        user_response = usecase(email='teste@gmail3.com', name='Gabriel Godoy', role=ROLE.ADMIN_COLLABORATOR, groups=[GROUPS.GAIA], requester_role=ROLE.ADMIN_COLLABORATOR)
 
-        assert user_response.role == ROLE.COLLABORATOR
+        assert user_response.role == ROLE.ADMIN_COLLABORATOR
         assert user_response.email == 'teste@gmail3.com'
         assert user_response.name == 'Gabriel Godoy'
         assert user_response.groups == [GROUPS.GAIA]

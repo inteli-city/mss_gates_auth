@@ -29,7 +29,7 @@ class Test_ListUsersInGroupController:
                 {
                     'user_id': '1',
                     'name': 'Gabriel Godoy',
-                    'role': 'COLLABORATOR',
+                    'role': 'ADMIN_COLLABORATOR',
                     'email': 'teste@gmail.com',
                     'groups': ['GAIA'],
                     'enabled': True,

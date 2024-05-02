@@ -11,7 +11,7 @@ class CreateUserUsecase:
 
     def __call__(self, email: str, name: str, role: ROLE, groups: list, requester_role: ROLE) -> User:
         
-        if requester_role != ROLE.COLLABORATOR and requester_role != ROLE.ADMIN:
+        if requester_role != ROLE.ADMIN_COLLABORATOR and requester_role != ROLE.ADMIN_USER:
             raise ForbiddenAction("Usuário não tem permissão para criar usuários")
         
         user_response = self.repo.create_user(email=email, name=name, role=role, groups=groups)

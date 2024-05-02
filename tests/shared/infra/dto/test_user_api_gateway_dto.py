@@ -9,7 +9,7 @@ class Test_UserApiGatewayDTO:
             'sub': 'd61dbf66-a10f-11ed-a8fc-0242ac120002',
             'name': 'Gabriel Godoy',
             'email': 'gabriel.godoy@gmail.com', 
-            'custom:general_role': 'ADMIN',
+            'custom:general_role': 'ADMIN_COLLABORATOR',
             'cognito:groups': "GAIA,JUNDIAI"
             }
 
@@ -19,7 +19,7 @@ class Test_UserApiGatewayDTO:
             user_id = "d61dbf66-a10f-11ed-a8fc-0242ac120002",
             name = "Gabriel Godoy",
             email = "gabriel.godoy@gmail.com",
-            role = ROLE.ADMIN,
+            role = ROLE.ADMIN_COLLABORATOR,
             groups = [GROUPS.GAIA, GROUPS.JUNDIAI]
             )
         
