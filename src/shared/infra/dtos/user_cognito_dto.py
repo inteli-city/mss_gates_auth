@@ -66,7 +66,6 @@ class UserCognitoDTO:
         user_data["enabled"] = f'{data.get("Enabled")}'
         # user_data["status"] = f'{data.get("UserStatus")}'
 
-        print(user_data.get("enabled"))
         return UserCognitoDTO(
             user_id=str(user_data["user_id"]),
             email=str(user_data["email"]),

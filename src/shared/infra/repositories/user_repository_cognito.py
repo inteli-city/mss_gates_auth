@@ -45,12 +45,8 @@ class UserRepositoryCognito(IUserRepository):
                 all_users.extend(response["Users"])
                 next_page = response.get('PaginationToken', None)
                 users_remain = next_page is not None
-
-            print("n é dto")
         
             all_users = [UserCognitoDTO.from_cognito(user).to_entity() for user in all_users]
-
-            print("é dto")
 
             for user in all_users:
                 user.groups = self.get_groups_for_user(user.email)
