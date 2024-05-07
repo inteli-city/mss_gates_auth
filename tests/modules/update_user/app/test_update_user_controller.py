@@ -82,6 +82,30 @@ class Test_UpdateUserController:
         assert response.status_code == 400
         assert response.body == "Parâmetro ausente: email"
     
+    def test_update_user_controller_invalid_role(self):
+        repo = UserRepositoryMock()
+        usecase = UpdateUserUsecase(repo)
+        controller = UpdateUserController(usecase)
+
+        request = HttpRequest(body={"requester_user": {
+                "sub": repo.users[0].user_id,
+                "name": repo.users[0].name,
+                "email": repo.users[0].email,
+                "custom:general_role": repo.users[0].role.value,
+                "cognito:groups": ','.join([group.value for group in repo.users[0].groups])
+            },
+            'email': 'teste@gmail.com',
+            'name': 'Gabriel Godoy',
+            'role': '123',
+            'groups': ['GAIA'],
+            'enabled': True
+        })
+
+        response = controller(request)
+
+        assert response.status_code == 400
+        assert response.body == "Parâmetro inválido: role"
+    
     def test_update_user_controller_no_groups(self):
         repo = UserRepositoryMock()
         usecase = UpdateUserUsecase(repo)
