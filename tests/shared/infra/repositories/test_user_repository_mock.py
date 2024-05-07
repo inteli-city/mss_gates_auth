@@ -3,6 +3,7 @@ from src.shared.domain.entities.user import User
 from src.shared.domain.enums.groups_enum import GROUPS
 from src.shared.domain.enums.role_enum import ROLE
 from src.shared.domain.enums.user_status_enum import USER_STATUS
+from src.shared.helpers.errors.usecase_errors import DuplicatedItem
 from src.shared.infra.repositories.user_repository_mock import UserRepositoryMock
 import pytest
 
@@ -29,15 +30,20 @@ class Test_UserRepositoryMock:
 
     def test_create_user(self):
         repo = UserRepositoryMock()
-        user = repo.create_user(email='teste3@gmail.com', name='Gabriel Godoy', role=ROLE.COLLABORATOR, groups=[])
+        user = repo.create_user(email='teste4@gmail.com', name='Gabriel Godoy', role=ROLE.COLLABORATOR, groups=[])
 
         assert len(repo.users) == 4
         assert type(user) == User
         assert repo.users[-1].user_id == '4'
-        assert repo.users[-1].email == 'teste3@gmail.com'
+        assert repo.users[-1].email == 'teste4@gmail.com'
         assert repo.users[-1].name == 'Gabriel Godoy'
         assert repo.users[-1].role == ROLE.COLLABORATOR
         assert repo.users[-1].groups == []
+    
+    def test_create_user_duplicated(self):
+        repo = UserRepositoryMock()
+        with pytest.raises(DuplicatedItem):
+            repo.create_user(email='teste@gmail.com', name='Gabriel Godoy', role=ROLE.COLLABORATOR, groups=[])
 
     def test_get_users_in_group(self):
         repo = UserRepositoryMock()
@@ -70,10 +76,22 @@ class Test_UserRepositoryMock:
         assert user.groups == [GROUPS.JUNDIAI]
         assert user.enabled == True
     
+    def test_update_user_return_none(self):
+        repo = UserRepositoryMock()
+        response = repo.update_user(user_email='teste@gmail.', kvp_to_update={'role': ROLE.USER}, addGroups=[GROUPS.JUNDIAI], removeGroups=[GROUPS.GAIA], enabled=False)
+
+        assert response == None
+    
     def test_refresh_token(self):
         repo = UserRepositoryMock()
-        resp = repo.refresh_token(
+        response = repo.refresh_token(
             refresh_token="valid_refresh_token-teste@gmail.com")
-        assert resp[0] == 'valid_access_token-teste@gmail.com'
-        assert resp[1] == 'valid_refresh_token-teste@gmail.com'
-        assert resp[2] == 'valid_id_token-teste@gmail.com'
+        assert response[0] == 'valid_access_token-teste@gmail.com'
+        assert response[1] == 'valid_refresh_token-teste@gmail.com'
+        assert response[2] == 'valid_id_token-teste@gmail.com'
+    
+    def test_refresh_token_return_none(self):
+        repo = UserRepositoryMock()
+        response = repo.refresh_token(
+            refresh_token="valid_refresh_tokenteste@gmail.com")
+        assert response == (None, None)

@@ -55,7 +55,7 @@ class Test_CreateUserPresenter:
                 "stageVariables": None,
                 "body": {
                     'name': 'Gabriel Godoy',
-                    'email': 'teste@gmail.com',
+                    'email': 'teste4@gmail.com',
                     'role': 'USER',
                     'groups': ['GAIA'],
                 }

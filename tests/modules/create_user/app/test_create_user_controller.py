@@ -10,7 +10,6 @@ class Test_CreateUserController:
         repo = UserRepositoryMock()
         usecase = CreateUserUsecase(repo)
         controller = CreateUserController(usecase)
-        header = {"Authorization": "Bearer valid_access_token-teste@gmail.com"}
 
         request = HttpRequest(body={"requester_user": {
                 "sub": repo.users[0].user_id,
@@ -23,7 +22,7 @@ class Test_CreateUserController:
             'email': 'teste123@gmail.com',
             'role': 'COLLABORATOR',
             'groups': ['GAIA']
-        }, headers=header)
+        })
 
         response = controller(request)
 
@@ -169,3 +168,49 @@ class Test_CreateUserController:
 
         assert response.status_code == 400
         assert response.body == "Parâmetro ausente: groups"
+    
+    def test_create_user_controller_group_not_valid(self):
+        repo = UserRepositoryMock()
+        usecase = CreateUserUsecase(repo)
+        controller = CreateUserController(usecase)
+
+        request = HttpRequest(body={"requester_user": {
+                "sub": repo.users[0].user_id,
+                "name": repo.users[0].name,
+                "email": repo.users[0].email,
+                "custom:general_role": repo.users[0].role.value,
+                "cognito:groups": ','.join([group.value for group in repo.users[0].groups])
+            },
+            'name': 'Gabriel Godoy',
+            'email': 'teste@gmail.com',
+            'role': 'COLLABORATOR',
+            'groups': ['123']
+        })
+
+        response = controller(request)
+
+        assert response.status_code == 400
+        assert response.body == "Parâmetro inválido: groups"
+    
+    def test_create_user_controller_duplicated(self):
+        repo = UserRepositoryMock()
+        usecase = CreateUserUsecase(repo)
+        controller = CreateUserController(usecase)
+
+        request = HttpRequest(body={"requester_user": {
+                "sub": repo.users[0].user_id,
+                "name": repo.users[0].name,
+                "email": repo.users[0].email,
+                "custom:general_role": repo.users[0].role.value,
+                "cognito:groups": ','.join([group.value for group in repo.users[0].groups])
+            },
+            'name': 'Gabriel Godoy',
+            'email': 'teste@gmail.com',
+            'role': 'COLLABORATOR',
+            'groups': ['GAIA']
+        })
+
+        response = controller(request)
+
+        assert response.status_code == 409
+        assert response.body == "Usuário ja cadastrado com esses dados"

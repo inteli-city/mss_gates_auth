@@ -6,7 +6,7 @@ from src.shared.domain.enums.role_enum import ROLE
 from src.shared.domain.enums.user_status_enum import USER_STATUS
 from src.shared.domain.repositories.user_repository_interface import IUserRepository
 from src.shared.helpers.errors.domain_errors import EntityError
-from src.shared.helpers.errors.usecase_errors import NoItemsFound
+from src.shared.helpers.errors.usecase_errors import DuplicatedItem, NoItemsFound
 
 
 class UserRepositoryMock(IUserRepository):
@@ -23,6 +23,9 @@ class UserRepositoryMock(IUserRepository):
         return self.users
 
     def create_user(self, email: str, name: str, role: ROLE, groups: List[GROUPS]) -> User:
+        for user in self.users:
+            if user.email == email:
+                raise DuplicatedItem("Usuário já cadastrado")
         new_user = User(email=email, name=name, role=role, groups=groups, enabled=True, user_status=USER_STATUS.CONFIRMED)
         new_user.user_id = str(len(self.users) + 1)
         self.users.append(new_user)
