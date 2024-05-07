@@ -28,17 +28,5 @@ class GetAllUsersController:
         except MissingParameters as err:
             return BadRequest(body=f"Parâmetro ausente: {err.message}")
 
-        except InvalidCredentials as err:
-            return BadRequest(body=f"Parâmetro inválido: {err.message}")
-
-        except EntityError as err:
-            return BadRequest(body=f"Parâmetro inválido: {err.message}")
-        
-        except NoItemsFound as err:
-            return BadRequest(body=f"Usuário não encontrado: {err.message}")
-        
-        except InvalidTokenError as err:
-            return Unauthorized(body="Token inválido ou expirado")
-        
         except Exception as err:
             return InternalServerError(body=err.args[0])

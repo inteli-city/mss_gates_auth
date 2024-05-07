@@ -22,6 +22,13 @@ class Test_ListUsersInGroupUsecase:
         with pytest.raises(ForbiddenAction):
             usecase(group=GROUPS.GAIA, request_user_role=ROLE.USER, request_user_groups=[GROUPS.GAIA])
     
+    def test_list_users_in_group_usecase_user_not_in_group(self):
+        repo = UserRepositoryMock()
+        usecase = ListUsersInGroupUsecase(repo)
+
+        with pytest.raises(ForbiddenAction):
+            usecase(group=GROUPS.JUNDIAI, request_user_role=ROLE.ADMIN_COLLABORATOR, request_user_groups=[GROUPS.GAIA])
+    
 
     def test_list_users_in_group_usecase_with_user_not_in_group(self):
         repo = UserRepositoryMock()
