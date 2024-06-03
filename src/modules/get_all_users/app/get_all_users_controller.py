@@ -3,9 +3,9 @@ from .get_all_users_usecase import GetAllUsersUsecase
 from .get_all_users_viewmodel import GetAllUsersViewmodel
 from src.shared.helpers.errors.controller_errors import MissingParameters
 from src.shared.helpers.errors.domain_errors import EntityError
-from src.shared.helpers.errors.usecase_errors import InvalidCredentials, InvalidTokenError, NoItemsFound
+from src.shared.helpers.errors.usecase_errors import ForbiddenAction, InvalidCredentials, InvalidTokenError, NoItemsFound
 from src.shared.helpers.external_interfaces.external_interface import IRequest, IResponse
-from src.shared.helpers.external_interfaces.http_codes import OK, BadRequest, InternalServerError, Unauthorized
+from src.shared.helpers.external_interfaces.http_codes import OK, BadRequest, Forbidden, InternalServerError, Unauthorized
 
 
 class GetAllUsersController:
@@ -27,6 +27,9 @@ class GetAllUsersController:
         
         except MissingParameters as err:
             return BadRequest(body=f"Parâmetro ausente: {err.message}")
+        
+        except ForbiddenAction as err:
+            return Forbidden(body=err.args[0])
 
         except Exception as err:
             return InternalServerError(body=err.args[0])
