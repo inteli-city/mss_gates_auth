@@ -64,7 +64,7 @@ class UserCognitoDTO:
         # user_data["created_at"] = data.get("UserCreateDate")
         # user_data["updated_at"] = data.get("UserLastModifiedDate")
         user_data["enabled"] = f'{data.get("Enabled")}'
-        # user_data["status"] = f'{data.get("UserStatus")}'
+        user_data["status"] = f'{data.get("UserStatus")}'
 
         return UserCognitoDTO(
             user_id=str(user_data["user_id"]),
@@ -72,7 +72,7 @@ class UserCognitoDTO:
             name=str(user_data["name"]),
             role = ROLE[user_data["role"]],
             enabled=bool(user_data.get("enabled").lower() == "true"),
-            user_status=USER_STATUS.CONFIRMED
+            user_status=USER_STATUS[user_data["status"]],
         )
 
     def to_entity(self) -> User:
