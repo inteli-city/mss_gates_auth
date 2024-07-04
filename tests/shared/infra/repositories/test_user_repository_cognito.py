@@ -18,6 +18,8 @@ class Test_UserRepositoryCognito:
     def test_get_all_users(self):
         repo = UserRepositoryCognito()
         repo.get_all_users()
+
+        assert 1 == 0
     
     @pytest.mark.skip("Can't test it locally")
     def test_update_user_enabled(self):

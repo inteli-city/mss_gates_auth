@@ -85,7 +85,7 @@ class Test_UserCognitoDTO:
             name="joao",
             role=ROLE.COLLABORATOR,
             enabled=True,
-            user_status=USER_STATUS.CONFIRMED
+            user_status=USER_STATUS.UNCONFIRMED
         )
 
         assert user_cognito_dto.user_id == expected_dto.user_id
