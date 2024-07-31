@@ -98,7 +98,7 @@ class UserRepositoryCognito(IUserRepository):
         future_date = now + datetime.timedelta(days=90)
 
         # Converter para timestamp em milissegundos
-        ttl = str(future_date.timestamp() * 1000)
+        ttl = str(int(future_date.timestamp() * 1000))
 
         cognito_attributes = [
             {
