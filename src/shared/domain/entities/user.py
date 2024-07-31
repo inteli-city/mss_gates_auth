@@ -16,9 +16,10 @@ class User(abc.ABC):
     groups: List[GROUPS]
     enabled: bool
     user_status: USER_STATUS
+    ttl: int # time to live - timestamp
     MIN_NAME_LENGTH = 2
 
-    def __init__(self, name: str, email: str, role: ROLE, enabled: bool, user_status: USER_STATUS, groups: List[GROUPS] = [], user_id: str = None):
+    def __init__(self, name: str, email: str, role: ROLE, enabled: bool, user_status: USER_STATUS, ttl: int, groups: List[GROUPS] = [], user_id: str = None):
         if type(user_id) != str and user_id is not None:
             raise EntityError("user_id")
         self.user_id = user_id
@@ -47,6 +48,10 @@ class User(abc.ABC):
             raise EntityError("user_status")
         self.user_status = user_status
 
+        if type(ttl) != int:
+            raise EntityError("ttl")
+        self.ttl = ttl
+
     @staticmethod
     def parse_object(user: dict) -> 'User':
         return User(
@@ -56,7 +61,8 @@ class User(abc.ABC):
             role=ROLE[user['role']],
             groups=[GROUPS[group] for group in user['groups']],
             enabled=user['enabled'],
-            user_status=USER_STATUS[user['user_status']]
+            user_status=USER_STATUS[user['user_status']],
+            ttl=user['ttl']
         )
 
     @staticmethod
@@ -89,8 +95,9 @@ class User(abc.ABC):
             'role': self.role.value,
             'groups': [group.value for group in self.groups],
             'enabled': self.enabled,
-            'user_status': self.user_status.value
+            'user_status': self.user_status.value,
+            'ttl': self.ttl
         }
 
     def __repr__(self):
-        return f"User(user_id={self.user_id}, name={self.name}, email={self.email}, role={self.role}, groups={self.groups}, enabled={self.enabled}, user_status={self.user_status})"
+        return f"User(user_id={self.user_id}, name={self.name}, email={self.email}, role={self.role}, groups={self.groups}, enabled={self.enabled}, user_status={self.user_status}, ttl={self.ttl})"

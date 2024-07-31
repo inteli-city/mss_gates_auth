@@ -13,7 +13,8 @@ class Test_CreateUserViewmodel:
             email='teste@gmail.com',
             groups=[],
             enabled=True,
-            user_status=USER_STATUS.FORCE_CHANGE_PASSWORD
+            user_status=USER_STATUS.FORCE_CHANGE_PASSWORD,
+            ttl=123
             )
         )
 
@@ -25,7 +26,8 @@ class Test_CreateUserViewmodel:
                 'email': 'teste@gmail.com',
                 'groups': [],
                 'enabled': True,
-                'user_status': 'FORCE_CHANGE_PASSWORD'
+                'user_status': 'FORCE_CHANGE_PASSWORD',
+                'ttl': 123
             },
             'message': 'Usuário foi criado com sucesso!'
         }
@@ -38,7 +40,7 @@ class Test_CreateUserViewmodel:
                 email='teste@gmail.com',
                 groups=[],
             enabled=True,
-            user_status=USER_STATUS.FORCE_CHANGE_PASSWORD))
+            user_status=USER_STATUS.FORCE_CHANGE_PASSWORD, ttl=123))
         
         expected = {
             'user_id': '123',
@@ -47,7 +49,8 @@ class Test_CreateUserViewmodel:
             'email': 'teste@gmail.com',
             'groups': [],
             'enabled': True,
-            'user_status': 'FORCE_CHANGE_PASSWORD'
+            'user_status': 'FORCE_CHANGE_PASSWORD',
+            'ttl': 123
         }
 
         assert viewmodel.to_dict() == expected

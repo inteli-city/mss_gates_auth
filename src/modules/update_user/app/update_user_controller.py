@@ -41,7 +41,6 @@ class UpdateUserController:
             
             groups_enum_list = [GROUPS[group_string] for group_string in request.data.get('groups')]
 
-
             user_data = {k: v for k, v in request.data.items() if k in self.mutable_fields}
 
             user = self.UpdateUserUsecase(

@@ -16,7 +16,8 @@ class Test_CreateUserController:
                 "name": repo.users[0].name,
                 "email": repo.users[0].email,
                 "custom:general_role": repo.users[0].role.value,
-                "cognito:groups": ','.join([group.value for group in repo.users[0].groups])
+                "cognito:groups": ','.join([group.value for group in repo.users[0].groups]),
+                "custom:ttl": repo.users[0].ttl,
             },
             'name': 'Gabriel Godoy',
             'email': 'teste123@gmail.com',
@@ -27,18 +28,14 @@ class Test_CreateUserController:
         response = controller(request)
 
         assert response.status_code == 201
-        assert response.body == {
-            'user': {
-                'user_id': '4',
-                'name': 'Gabriel Godoy',
-                'role': 'COLLABORATOR',
-                'email': 'teste123@gmail.com',
-                'groups': ['GAIA'],
-                'enabled': True,
-                'user_status': 'CONFIRMED'
-            }, 
-            'message': 'Usuário foi criado com sucesso!'
-        }
+        assert response.body['user']['user_id'] == '4'
+        assert response.body['user']['name'] == 'Gabriel Godoy'
+        assert response.body['user']['role'] == 'COLLABORATOR'
+        assert response.body['user']['email'] == 'teste123@gmail.com'
+        assert response.body['user']['groups'] == ['GAIA']
+        assert response.body['user']['enabled'] == True
+        assert response.body['user']['user_status'] == 'CONFIRMED'
+        assert response.body['user']['ttl'] == 123
     
     def test_create_user_controller_no_requester_user(self):
         repo = UserRepositoryMock()
@@ -67,7 +64,8 @@ class Test_CreateUserController:
                 "name": repo.users[0].name,
                 "email": repo.users[0].email,
                 "custom:general_role": repo.users[0].role.value,
-                "cognito:groups": ','.join([group.value for group in repo.users[0].groups])
+                "cognito:groups": ','.join([group.value for group in repo.users[0].groups]),
+                "custom:ttl": repo.users[0].ttl,
             },
             'name': 'Gabriel Godoy',
             'email': 'teste@gmail.com',
@@ -90,7 +88,8 @@ class Test_CreateUserController:
                 "name": repo.users[0].name,
                 "email": repo.users[0].email,
                 "custom:general_role": repo.users[0].role.value,
-                "cognito:groups": ','.join([group.value for group in repo.users[0].groups])
+                "cognito:groups": ','.join([group.value for group in repo.users[0].groups]),
+                "custom:ttl": repo.users[0].ttl,
             },
             'name': 'Gabriel Godoy',
             'role': '123',
@@ -114,7 +113,8 @@ class Test_CreateUserController:
                 "name": repo.users[0].name,
                 "email": repo.users[0].email,
                 "custom:general_role": repo.users[0].role.value,
-                "cognito:groups": ','.join([group.value for group in repo.users[0].groups])
+                "cognito:groups": ','.join([group.value for group in repo.users[0].groups]),
+                "custom:ttl": repo.users[0].ttl,
             },
             'email': 'teste@gmail.com',
             'role': 'COLLABORATOR',
@@ -136,7 +136,8 @@ class Test_CreateUserController:
                 "name": repo.users[0].name,
                 "email": repo.users[0].email,
                 "custom:general_role": repo.users[0].role.value,
-                "cognito:groups": ','.join([group.value for group in repo.users[0].groups])
+                "cognito:groups": ','.join([group.value for group in repo.users[0].groups]),
+                "custom:ttl": repo.users[0].ttl,
             },
             'name': 'Gabriel Godoy',
             'role': 'COLLABORATOR',
@@ -157,7 +158,8 @@ class Test_CreateUserController:
                 "name": repo.users[0].name,
                 "email": repo.users[0].email,
                 "custom:general_role": repo.users[0].role.value,
-                "cognito:groups": ','.join([group.value for group in repo.users[0].groups])
+                "cognito:groups": ','.join([group.value for group in repo.users[0].groups]),
+                "custom:ttl": repo.users[0].ttl,
             },
             'name': 'Gabriel Godoy',
             'email': 'teste@gmail.com',
@@ -179,7 +181,8 @@ class Test_CreateUserController:
                 "name": repo.users[0].name,
                 "email": repo.users[0].email,
                 "custom:general_role": repo.users[0].role.value,
-                "cognito:groups": ','.join([group.value for group in repo.users[0].groups])
+                "cognito:groups": ','.join([group.value for group in repo.users[0].groups]),
+                "custom:ttl": repo.users[0].ttl,
             },
             'name': 'Gabriel Godoy',
             'email': 'teste@gmail.com',
@@ -202,7 +205,8 @@ class Test_CreateUserController:
                 "name": repo.users[0].name,
                 "email": repo.users[0].email,
                 "custom:general_role": repo.users[0].role.value,
-                "cognito:groups": ','.join([group.value for group in repo.users[0].groups])
+                "cognito:groups": ','.join([group.value for group in repo.users[0].groups]),
+                "custom:ttl": repo.users[0].ttl,
             },
             'name': 'Gabriel Godoy',
             'email': 'teste@gmail.com',

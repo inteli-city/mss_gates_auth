@@ -10,8 +10,7 @@ from src.shared.infra.repositories.user_repository_mock import UserRepositoryMoc
 class Test_UserCognitoDTO:
 
     def test_from_entity(self):
-        repo = UserRepositoryMock()
-        user = User(user_id="1", email="joao@hotmail.com", name='João', role=ROLE.COLLABORATOR, groups=[GROUPS.GAIA], enabled=True, user_status=USER_STATUS.CONFIRMED)
+        user = User(user_id="1", email="joao@hotmail.com", name='João', role=ROLE.COLLABORATOR, groups=[GROUPS.GAIA], enabled=True, user_status=USER_STATUS.CONFIRMED, ttl=123)
 
         user_cognito_dto = UserCognitoDTO.from_entity(user)
 
@@ -22,7 +21,8 @@ class Test_UserCognitoDTO:
             role=user.role,
             groups=user.groups,
             enabled=user.enabled,
-            user_status=user.user_status
+            user_status=user.user_status,
+            ttl=user.ttl
         )
 
         assert user_cognito_dto.user_id == user_cognito_dto_expected.user_id
@@ -32,9 +32,10 @@ class Test_UserCognitoDTO:
         assert user_cognito_dto.groups == user_cognito_dto_expected.groups
         assert user_cognito_dto.enabled == user_cognito_dto_expected.enabled
         assert user_cognito_dto.user_status == user_cognito_dto_expected.user_status
+        assert user_cognito_dto.ttl == user_cognito_dto_expected.ttl
 
     def test_from_entity_none(self):
-        user = User(user_id="1", email="joao@hotmail.com", name='João', role=ROLE.COLLABORATOR, groups=[GROUPS.GAIA], enabled=True, user_status=USER_STATUS.CONFIRMED)
+        user = User(user_id="1", email="joao@hotmail.com", name='João', role=ROLE.COLLABORATOR, groups=[GROUPS.GAIA], enabled=True, user_status=USER_STATUS.CONFIRMED, ttl=123)
         user_cognito_dto = UserCognitoDTO.from_entity(user)
 
         user_cognito_dto_expected = UserCognitoDTO(
@@ -44,7 +45,8 @@ class Test_UserCognitoDTO:
             role=user.role,
             groups=user.groups,
             enabled=user.enabled,
-            user_status=user.user_status
+            user_status=user.user_status,
+            ttl=user.ttl
         )
         
         assert user_cognito_dto.user_id == user_cognito_dto_expected.user_id
@@ -54,6 +56,7 @@ class Test_UserCognitoDTO:
         assert user_cognito_dto.groups == user_cognito_dto_expected.groups
         assert user_cognito_dto.enabled == user_cognito_dto_expected.enabled
         assert user_cognito_dto.user_status == user_cognito_dto_expected.user_status
+        assert user_cognito_dto.ttl == user_cognito_dto_expected.ttl
 
     def test_from_cognito(self):
         data = {
@@ -69,7 +72,8 @@ class Test_UserCognitoDTO:
                                            {'Name': 'name', 'Value': 'joao'},
                                            {'Name': 'email', 'Value': 'joao@hotmail.com'},
                                             {'Name': 'sub',
-                                        'Value': '123'}
+                                        'Value': '123'},
+                                            {'Name': 'custom:ttl', 'Value': '123'},
                                            ],
                         'UserCreateDate': datetime.datetime(2023, 2, 3, 23, 27, 48, 713000),
                         'UserLastModifiedDate': datetime.datetime(2023, 2, 3, 23, 27, 48, 713000),
@@ -85,7 +89,8 @@ class Test_UserCognitoDTO:
             name="joao",
             role=ROLE.COLLABORATOR,
             enabled=True,
-            user_status=USER_STATUS.UNCONFIRMED
+            user_status=USER_STATUS.UNCONFIRMED,
+            ttl=123
         )
 
         assert user_cognito_dto.user_id == expected_dto.user_id
@@ -94,6 +99,7 @@ class Test_UserCognitoDTO:
         assert user_cognito_dto.role == expected_dto.role
         assert user_cognito_dto.enabled == expected_dto.enabled
         assert user_cognito_dto.user_status == expected_dto.user_status
+        assert user_cognito_dto.ttl == expected_dto.ttl
     
     def test_to_cognito_attributes(self):
         user_cognito_dto = UserCognitoDTO(
@@ -103,7 +109,8 @@ class Test_UserCognitoDTO:
             role=ROLE.COLLABORATOR,
             groups=[GROUPS.GAIA],
             enabled=True,
-            user_status=USER_STATUS.CONFIRMED
+            user_status=USER_STATUS.CONFIRMED,
+            ttl=123
         )
         cognito = user_cognito_dto.to_cognito_attributes()
 
@@ -113,7 +120,9 @@ class Test_UserCognitoDTO:
         assert cognito[1]['Value'] == 'joao'
         assert cognito[2]['Name'] == 'custom:general_role'
         assert cognito[2]['Value'] == 'COLLABORATOR'
-        assert len(cognito) == 3
+        assert cognito[3]['Name'] == 'custom:ttl'
+        assert cognito[3]['Value'] == '123'
+        assert len(cognito) == 4
 
 
     def test_to_entity(self):
@@ -126,7 +135,8 @@ class Test_UserCognitoDTO:
             role = repo.users[0].role,
             groups = repo.users[0].groups,
             enabled = repo.users[0].enabled,
-            user_status = repo.users[0].user_status
+            user_status = repo.users[0].user_status,
+            ttl = repo.users[0].ttl
         )
 
         user = user_cognito_dto.to_entity()
@@ -138,3 +148,4 @@ class Test_UserCognitoDTO:
         assert user.groups == repo.users[0].groups
         assert user.enabled == repo.users[0].enabled
         assert user.user_status == repo.users[0].user_status
+        assert user.ttl == repo.users[0].ttl

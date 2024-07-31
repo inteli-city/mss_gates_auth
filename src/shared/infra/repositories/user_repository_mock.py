@@ -1,5 +1,5 @@
 from typing import List, Tuple
-
+import datetime
 from src.shared.domain.entities.user import User
 from src.shared.domain.enums.groups_enum import GROUPS
 from src.shared.domain.enums.role_enum import ROLE
@@ -14,9 +14,9 @@ class UserRepositoryMock(IUserRepository):
 
     def __init__(self):
         self.users = [
-            User(user_id="1", email='teste@gmail.com', name='Gabriel Godoy', role=ROLE.ADMIN_COLLABORATOR, groups=[GROUPS.GAIA], enabled=True, user_status=USER_STATUS.CONFIRMED),
-            User(user_id="2", email='teste2@gmail.com', name='Gabriel Godoy', role=ROLE.COLLABORATOR, enabled=True, user_status=USER_STATUS.UNCONFIRMED),
-            User(user_id="3",email='teste3@gmail.com', name='Gabriel Godoy', role=ROLE.USER, enabled=True, user_status=USER_STATUS.FORCE_CHANGE_PASSWORD),
+            User(user_id="1", email='teste@gmail.com', name='Gabriel Godoy', role=ROLE.ADMIN_COLLABORATOR, groups=[GROUPS.GAIA], enabled=True, user_status=USER_STATUS.CONFIRMED, ttl=123),
+            User(user_id="2", email='teste2@gmail.com', name='Gabriel Godoy', role=ROLE.COLLABORATOR, enabled=True, user_status=USER_STATUS.UNCONFIRMED, ttl=123),
+            User(user_id="3",email='teste3@gmail.com', name='Gabriel Godoy', role=ROLE.USER, enabled=True, user_status=USER_STATUS.FORCE_CHANGE_PASSWORD, ttl=123),
         ]
     
     def get_all_users(self) -> List[User]:
@@ -26,7 +26,8 @@ class UserRepositoryMock(IUserRepository):
         for user in self.users:
             if user.email == email:
                 raise DuplicatedItem("Usuário já cadastrado")
-        new_user = User(email=email, name=name, role=role, groups=groups, enabled=True, user_status=USER_STATUS.CONFIRMED)
+        
+        new_user = User(email=email, name=name, role=role, groups=groups, enabled=True, user_status=USER_STATUS.CONFIRMED, ttl=123)
         new_user.user_id = str(len(self.users) + 1)
         self.users.append(new_user)
         return self.get_user_by_email(new_user.email)
@@ -35,7 +36,6 @@ class UserRepositoryMock(IUserRepository):
         for userx in self.users:
             if userx.email == email:
                 return userx
-                
         return None
     
     def get_users_in_group(self, group: GROUPS) -> List[User]:

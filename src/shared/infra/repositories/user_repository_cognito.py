@@ -1,3 +1,4 @@
+import datetime
 import json
 import time
 from typing import Tuple, List
@@ -89,6 +90,16 @@ class UserRepositoryCognito(IUserRepository):
             return None
     
     def create_user(self, email: str, name: str, role: ROLE, groups: List[GROUPS]) -> User:
+
+        # Obter a data e hora atual
+        now = datetime.datetime.now()
+
+        # Adicionar 90 dias
+        future_date = now + datetime.timedelta(days=90)
+
+        # Converter para timestamp em milissegundos
+        ttl = int(future_date.timestamp() * 1000)
+
         cognito_attributes = [
             {
                 "Name": "email",
@@ -101,6 +112,10 @@ class UserRepositoryCognito(IUserRepository):
             {
                 "Name": "custom:general_role",
                 "Value": role.value
+            },
+            {
+                "Name": "custom:ttl",
+                "Value": ttl
             }
         ]
         cognito_attributes.append({

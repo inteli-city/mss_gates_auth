@@ -16,7 +16,8 @@ class Test_ListUsersInGroupController:
                 "name": repo.users[0].name,
                 "email": repo.users[0].email,
                 "custom:general_role": repo.users[0].role.value,
-                "cognito:groups": ','.join([group.value for group in repo.users[0].groups])
+                "cognito:groups": ','.join([group.value for group in repo.users[0].groups]),
+                "custom:ttl": repo.users[0].ttl,
             },
             'group': 'GAIA'
         })
@@ -33,7 +34,8 @@ class Test_ListUsersInGroupController:
                     'email': 'teste@gmail.com',
                     'groups': ['GAIA'],
                     'enabled': True,
-                    'user_status': 'CONFIRMED'
+                    'user_status': 'CONFIRMED',
+                    'ttl': 123
                 }
             ],
             'message': 'Usuários foram listados com sucesso!'
@@ -63,7 +65,8 @@ class Test_ListUsersInGroupController:
                 "name": repo.users[0].name,
                 "email": repo.users[0].email,
                 "custom:general_role": repo.users[0].role.value,
-                "cognito:groups": ','.join([group.value for group in repo.users[0].groups])
+                "cognito:groups": ','.join([group.value for group in repo.users[0].groups]),
+                "custom:ttl": repo.users[0].ttl,
             }
         })
 

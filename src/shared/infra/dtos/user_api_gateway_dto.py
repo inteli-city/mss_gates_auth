@@ -9,13 +9,15 @@ class UserApiGatewayDTO:
     user_id: str
     role: ROLE
     groups: List[GROUPS]
+    ttl: int
 
-    def __init__(self, name: str, email:str, user_id: str, role: ROLE, groups: List[GROUPS] = []):
+    def __init__(self, name: str, email:str, user_id: str, role: ROLE, ttl: int, groups: List[GROUPS] = []):
         self.name = name
         self.email = email
         self.user_id = user_id
         self.role = role
         self.groups = groups
+        self.ttl = ttl
 
     @staticmethod
     def from_api_gateway(user_data: dict) -> 'UserApiGatewayDTO':
@@ -27,8 +29,9 @@ class UserApiGatewayDTO:
             email=user_data['email'],
             user_id=user_data['sub'],
             role=ROLE[user_data['custom:general_role']],
-            groups=[GROUPS[group.strip()] for group in user_data.get('cognito:groups', '').split(',') if group.strip()]
+            groups=[GROUPS[group.strip()] for group in user_data.get('cognito:groups', '').split(',') if group.strip()],
+            ttl=int(user_data['custom:ttl'])
         )
     
     def __eq__(self, other):
-        return self.name == other.name and self.email == other.email and self.user_id == other.user_id and self.role == other.role and self.groups == other.groups
+        return self.name == other.name and self.email == other.email and self.user_id == other.user_id and self.role == other.role and self.groups == other.groups and self.ttl == other.ttl

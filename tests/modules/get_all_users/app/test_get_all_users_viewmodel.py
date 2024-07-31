@@ -12,7 +12,8 @@ class Test_GetAllUsersViewmodel:
                 email='teste@gmail.com',
                 groups=[],
                 enabled=True,
-                user_status=USER_STATUS.CONFIRMED
+                user_status=USER_STATUS.CONFIRMED,
+                ttl=123
                 ))
         
         expected = {
@@ -22,7 +23,8 @@ class Test_GetAllUsersViewmodel:
             'email': 'teste@gmail.com',
             'groups': [],
             'enabled': True,
-            'user_status': 'CONFIRMED'
+            'user_status': 'CONFIRMED',
+            'ttl': 123
         }
 
         assert viewmodel.to_dict() == expected
@@ -35,7 +37,7 @@ class Test_GetAllUsersViewmodel:
                 email='teste@gmail.com',
                 groups=[],
                 enabled=True,
-                user_status=USER_STATUS.CONFIRMED)
+                user_status=USER_STATUS.CONFIRMED, ttl=123)
             ])
         
         expected = {
@@ -46,7 +48,8 @@ class Test_GetAllUsersViewmodel:
                 'email': 'teste@gmail.com',
                 'groups': [],
                 'enabled': True,
-                'user_status': 'CONFIRMED'
+                'user_status': 'CONFIRMED',
+                'ttl': 123
                 }],
             'message': 'Usuários foram listados com sucesso!'
         }

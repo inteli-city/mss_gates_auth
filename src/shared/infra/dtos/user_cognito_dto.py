@@ -14,8 +14,9 @@ class UserCognitoDTO:
     groups: List[GROUPS]
     enabled: bool
     user_status: USER_STATUS
+    ttl: int
 
-    def __init__(self, user_id: str, email: str, name: str, role: ROLE, enabled: bool, user_status: USER_STATUS, groups: List[GROUPS] = []):
+    def __init__(self, user_id: str, email: str, name: str, role: ROLE, enabled: bool, ttl: int, user_status: USER_STATUS, groups: List[GROUPS] = []):
         self.user_id = user_id
         self.email = email
         self.name = name
@@ -23,6 +24,7 @@ class UserCognitoDTO:
         self.groups = groups
         self.enabled = enabled
         self.user_status = user_status
+        self.ttl = ttl
 
     @staticmethod
     def from_entity(user: User):
@@ -33,13 +35,15 @@ class UserCognitoDTO:
             role=user.role,
             groups=user.groups,
             enabled=user.enabled,
-            user_status=user.user_status
+            user_status=user.user_status,
+            ttl=user.ttl
         )
 
     TO_COGNITO_DICT = {
         "email": "email",
         "name": "name",
         "role": "custom:general_role",
+        "ttl": "custom:ttl",
     }
 
     FROM_COGNITO_DICT = {value: key for key, value in TO_COGNITO_DICT.items()}
@@ -73,6 +77,7 @@ class UserCognitoDTO:
             role = ROLE[user_data["role"]],
             enabled=bool(user_data.get("enabled").lower() == "true"),
             user_status=USER_STATUS[user_data["status"]],
+            ttl=int(user_data["ttl"]),
         )
 
     def to_entity(self) -> User:
@@ -83,7 +88,8 @@ class UserCognitoDTO:
             role=self.role,
             groups=self.groups,
             enabled=self.enabled,
-            user_status=self.user_status
+            user_status=self.user_status,
+            ttl=self.ttl
         )
     
     @staticmethod

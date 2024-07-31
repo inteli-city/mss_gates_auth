@@ -32,7 +32,8 @@ class Test_ListUsersInGroupPresenter:
                             "name": "Gabriel Godoy",
                             "email": "gabriel@gmail.com",
                             "custom:general_role": "ADMIN_COLLABORATOR",
-                            "cognito:groups": "GAIA"
+                            "cognito:groups": "GAIA",
+                            "custom:ttl": "123"
                         }
                 },
                 "domainName": "<url-id>.lambda-url.us-west-2.on.aws",

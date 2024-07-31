@@ -14,6 +14,7 @@ class UserViewmodel:
     groups: List[GROUPS]
     enabled: bool
     user_status: USER_STATUS
+    ttl: int
 
     def __init__(self, user: User):
         self.user_id = user.user_id
@@ -23,6 +24,7 @@ class UserViewmodel:
         self.groups = user.groups
         self.enabled = user.enabled
         self.user_status = user.user_status
+        self.ttl = user.ttl
 
     def to_dict(self):
         return {
@@ -32,7 +34,8 @@ class UserViewmodel:
             'role': self.role.value,
             'groups': [group.value for group in self.groups],
             'enabled': self.enabled,
-            'user_status': self.user_status.value
+            'user_status': self.user_status.value,
+            'ttl': self.ttl
         }
 
 class GetAllUsersViewmodel:

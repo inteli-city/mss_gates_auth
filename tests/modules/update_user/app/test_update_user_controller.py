@@ -16,7 +16,8 @@ class Test_UpdateUserController:
                 "name": repo.users[0].name,
                 "email": repo.users[0].email,
                 "custom:general_role": repo.users[0].role.value,
-                "cognito:groups": ','.join([group.value for group in repo.users[0].groups])
+                "cognito:groups": ','.join([group.value for group in repo.users[0].groups]),
+                "custom:ttl": repo.users[0].ttl,
             },
             'name': 'Gabriel Godoy',
             'email': 'teste@gmail.com',
@@ -36,7 +37,8 @@ class Test_UpdateUserController:
                 'email': 'teste@gmail.com',
                 'groups': ['GAIA'],
                 'enabled': True,
-                'user_status': 'CONFIRMED'
+                'user_status': 'CONFIRMED',
+                'ttl': 123
             }, 
             'message': 'Usuário foi atualizado com sucesso!'
         }
@@ -69,7 +71,8 @@ class Test_UpdateUserController:
                 "name": repo.users[0].name,
                 "email": repo.users[0].email,
                 "custom:general_role": repo.users[0].role.value,
-                "cognito:groups": ','.join([group.value for group in repo.users[0].groups])
+                "cognito:groups": ','.join([group.value for group in repo.users[0].groups]),
+                "custom:ttl": repo.users[0].ttl,
             },
             'name': 'Gabriel Godoy',
             'role': 'USER',
@@ -92,7 +95,8 @@ class Test_UpdateUserController:
                 "name": repo.users[0].name,
                 "email": repo.users[0].email,
                 "custom:general_role": repo.users[0].role.value,
-                "cognito:groups": ','.join([group.value for group in repo.users[0].groups])
+                "cognito:groups": ','.join([group.value for group in repo.users[0].groups]),
+                "custom:ttl": repo.users[0].ttl,
             },
             'email': 'teste@gmail.com',
             'name': 'Gabriel Godoy',
@@ -116,7 +120,8 @@ class Test_UpdateUserController:
                 "name": repo.users[0].name,
                 "email": repo.users[0].email,
                 "custom:general_role": repo.users[0].role.value,
-                "cognito:groups": ','.join([group.value for group in repo.users[0].groups])
+                "cognito:groups": ','.join([group.value for group in repo.users[0].groups]),
+                "custom:ttl": repo.users[0].ttl,
             },
             'name': 'Gabriel Godoy',
             'role': 'USER',
@@ -139,7 +144,8 @@ class Test_UpdateUserController:
                 "name": repo.users[0].name,
                 "email": repo.users[0].email,
                 "custom:general_role": repo.users[0].role.value,
-                "cognito:groups": ','.join([group.value for group in repo.users[0].groups])
+                "cognito:groups": ','.join([group.value for group in repo.users[0].groups]),
+                "custom:ttl": repo.users[0].ttl,
             },
             'name': 'Gabriel Godoy',
             'role': 'USER',
@@ -163,7 +169,8 @@ class Test_UpdateUserController:
                 "name": repo.users[0].name,
                 "email": repo.users[0].email,
                 "custom:general_role": repo.users[0].role.value,
-                "cognito:groups": ','.join([group.value for group in repo.users[0].groups])
+                "cognito:groups": ','.join([group.value for group in repo.users[0].groups]),
+                "custom:ttl": repo.users[0].ttl,
             },
             'name': 'Gabriel Godoy',
             'role': 'USER',
