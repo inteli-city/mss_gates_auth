@@ -50,13 +50,6 @@ class IacStack(Stack):
             "REGION": self.aws_region
         }
 
-        api_gateway_resource = self.rest_api.root.add_resource("mss-auth", default_cors_preflight_options={
-            "allow_origins": Cors.ALL_ORIGINS,
-            "allow_methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-            "allow_headers": Cors.DEFAULT_HEADERS
-        }
-        )
-
         api_gateway_resource = self.rest_api.root.add_cors_preflight(allow_origins=Cors.ALL_ORIGINS,
                                                                      allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
                                                                      allow_headers=Cors.DEFAULT_HEADERS)
