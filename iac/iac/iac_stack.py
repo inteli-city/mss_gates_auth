@@ -57,6 +57,10 @@ class IacStack(Stack):
         }
         )
 
+        api_gateway_resource = self.rest_api.root.add_cors_preflight(allow_origins=Cors.ALL_ORIGINS,
+                                                                     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+                                                                     allow_headers=Cors.DEFAULT_HEADERS)
+
         self.lambda_stack = LambdaStack(self, api_gateway_resource=api_gateway_resource,
                                         environment_variables=ENVIRONMENT_VARIABLES, authorizer=self.cognito_auth)
         
