@@ -131,7 +131,7 @@ class UserRepositoryCognito(IUserRepository):
                 UserAttributes=cognito_attributes)
             
             for system in systems:
-                self.client.admin_add_user_to_system(
+                self.client.admin_add_user_to_group(
                     UserPoolId=self.user_pool_id,
                     Username=email,
                     GroupName=system
@@ -227,7 +227,7 @@ class UserRepositoryCognito(IUserRepository):
     
     def add_user_to_system(self, user_email: str, system: str) -> None:
         try:
-            self.client.admin_add_user_to_system(
+            self.client.admin_add_user_to_group(
                 UserPoolId=self.user_pool_id,
                 Username=user_email,
                 GroupName=system
@@ -240,7 +240,7 @@ class UserRepositoryCognito(IUserRepository):
     
     def remove_user_from_system(self, user_email: str, system: str) -> None:
         try:
-            self.client.admin_remove_user_from_system(
+            self.client.remove_user_from_group(
                 UserPoolId=self.user_pool_id,
                 Username=user_email,
                 GroupName=system
