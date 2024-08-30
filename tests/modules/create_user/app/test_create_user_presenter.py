@@ -58,7 +58,7 @@ class Test_CreateUserPresenter:
                     'name': 'Gabriel Godoy',
                     'email': 'teste4@gmail.com',
                     'role': 'USER',
-                    'groups': ['GAIA'],
+                    'systems': ['GAIA'],
                 }
             }
 

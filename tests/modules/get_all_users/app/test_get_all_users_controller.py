@@ -16,7 +16,7 @@ class Test_GetAllUsersController:
                 "name": repo.users[0].name,
                 "email": repo.users[0].email,
                 "custom:general_role": repo.users[0].role.value,
-                "cognito:groups": ','.join([group.value for group in repo.users[0].groups]),
+                "cognito:groups": ','.join([system for system in repo.users[0].systems]),
                 "custom:ttl": repo.users[0].ttl,
             }
         })
@@ -31,7 +31,7 @@ class Test_GetAllUsersController:
                     'name': 'Gabriel Godoy',
                     'role': 'ADMIN_COLLABORATOR',
                     'email': 'teste@gmail.com',
-                    'groups': ['GAIA'],
+                    'systems': ['GAIA'],
                     'enabled': True,
                     'user_status': 'CONFIRMED',
                     'ttl': 123
@@ -41,7 +41,7 @@ class Test_GetAllUsersController:
                     'name': 'Gabriel Godoy',
                     'role': 'COLLABORATOR',
                     'email': 'teste2@gmail.com',
-                    'groups': [],
+                    'systems': [],
                     'enabled': True,
                     'user_status': 'UNCONFIRMED',
                     'ttl': 123
@@ -51,7 +51,7 @@ class Test_GetAllUsersController:
                     'name': 'Gabriel Godoy',
                     'role': 'USER',
                     'email': 'teste3@gmail.com',
-                    'groups': [],
+                    'systems': [],
                     'enabled': True,
                     'user_status': 'FORCE_CHANGE_PASSWORD',
                     'ttl': 123

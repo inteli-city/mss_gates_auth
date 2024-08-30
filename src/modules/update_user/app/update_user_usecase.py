@@ -1,6 +1,5 @@
 from typing import List
 from src.shared.domain.entities.user import User
-from src.shared.domain.enums.groups_enum import GROUPS
 from src.shared.domain.enums.role_enum import ROLE
 from src.shared.domain.repositories.user_repository_interface import IUserRepository
 from src.shared.helpers.errors.usecase_errors import ForbiddenAction, NoItemsFound
@@ -10,10 +9,10 @@ class UpdateUserUsecase:
 
     def __init__(self, repo: IUserRepository):
         self.repo = repo
-        self.immutable_fields = ['email', 'groups']
+        self.immutable_fields = ['email', 'systems']
         self.mutable_fields = ['name', 'role']
 
-    def __call__(self, new_user_data: dict, user_email: str, groups: List[GROUPS], enabled: bool, requester_role: ROLE) -> User:
+    def __call__(self, new_user_data: dict, user_email: str, systems: List[str], enabled: bool, requester_role: ROLE) -> User:
 
         if requester_role != ROLE.ADMIN_COLLABORATOR:
             raise ForbiddenAction("Usuário não tem permissão para alterar usuários")
@@ -28,7 +27,6 @@ class UpdateUserUsecase:
 
         old_user_data = User.to_dict(old_user)
 
-        
         kvp_to_update = {k: v for k, v in new_user_data.items() if k in self.mutable_fields and v is not None}
 
         bool_items = [User.__annotations__[k] for k in self.mutable_fields if User.__annotations__[k] == bool]
@@ -40,12 +38,12 @@ class UpdateUserUsecase:
 
         kvp_to_update = {k: str(v) for k, v in kvp_to_update.items()}
 
-        add_groups = [group for group in groups if group not in old_user.groups]
-        remove_groups = [group for group in old_user.groups if group not in groups]
+        add_systems = [system for system in systems if system not in old_user.systems]
+        remove_systems = [system for system in old_user.systems if system not in systems]
 
-        add_groups = add_groups if add_groups else None
-        remove_groups = remove_groups if remove_groups else None
+        add_systems = add_systems if add_systems else None
+        remove_systems = remove_systems if remove_systems else None
 
-        user_response = self.repo.update_user(user_email=user_email, kvp_to_update=kvp_to_update, addGroups=add_groups, removeGroups=remove_groups, enabled=enabled)
+        user_response = self.repo.update_user(user_email=user_email, kvp_to_update=kvp_to_update, addSystems=add_systems, removeSystems=remove_systems, enabled=enabled)
 
         return user_response

@@ -58,7 +58,7 @@ class Test_UpdateUserPresenter:
                 'name': 'Gabriel Godoy',
                 'email': 'teste@gmail.com',
                 'role': 'USER',
-                'groups': ['GAIA'],
+                'systems': ['GAIA'],
                 'enabled': True
             }
         }

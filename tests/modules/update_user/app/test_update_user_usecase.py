@@ -1,6 +1,5 @@
 import pytest
 from src.modules.update_user.app.update_user_usecase import UpdateUserUsecase
-from src.shared.domain.enums.groups_enum import GROUPS
 from src.shared.domain.enums.role_enum import ROLE
 from src.shared.helpers.errors.domain_errors import EntityError
 from src.shared.helpers.errors.usecase_errors import ForbiddenAction, NoItemsFound
@@ -15,11 +14,11 @@ class Test_UpdateUserUsecase:
         user_response = usecase(new_user_data={
                 'name': 'Gabriel Godoy 01',
                 'role': 'USER',
-            }, user_email='teste@gmail.com', groups=[GROUPS.GAIA, GROUPS.JUNDIAI], enabled=False, requester_role=ROLE.ADMIN_COLLABORATOR)
+            }, user_email='teste@gmail.com', systems=["GAIA", "JUNDIAI"], enabled=False, requester_role=ROLE.ADMIN_COLLABORATOR)
         
         assert user_response.email == 'teste@gmail.com'
         assert user_response.role == ROLE.USER
-        assert user_response.groups == [GROUPS.GAIA, GROUPS.JUNDIAI]
+        assert user_response.systems == ["GAIA", "JUNDIAI"]
         assert user_response.name == 'Gabriel Godoy 01'
         assert user_response.enabled == False
     
@@ -31,7 +30,7 @@ class Test_UpdateUserUsecase:
             usecase(new_user_data={
                     'name': 'Gabriel Godoy 01',
                     'role': 'USER',
-            }, user_email='teste@gmail.com', groups=[GROUPS.GAIA, GROUPS.JUNDIAI], enabled=False, requester_role=ROLE.ADMIN_USER)
+            }, user_email='teste@gmail.com', systems=["GAIA", "JUNDIAI"], enabled=False, requester_role=ROLE.ADMIN_USER)
     
     def test_update_user_usecase_user_not_found(self):
         repo = UserRepositoryMock()
@@ -41,7 +40,7 @@ class Test_UpdateUserUsecase:
             usecase(new_user_data={
                     'name': 'Gabriel Godoy 01',
                     'role': 'USER',
-            }, user_email='invalid', groups=[GROUPS.GAIA, GROUPS.JUNDIAI], enabled=False, requester_role=ROLE.ADMIN_COLLABORATOR)
+            }, user_email='invalid', systems=["GAIA", "JUNDIAI"], enabled=False, requester_role=ROLE.ADMIN_COLLABORATOR)
 
 
 

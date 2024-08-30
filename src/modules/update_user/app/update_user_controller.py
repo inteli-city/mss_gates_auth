@@ -2,7 +2,6 @@ from src.shared.domain.enums.role_enum import ROLE
 from src.shared.infra.dtos.user_api_gateway_dto import UserApiGatewayDTO
 from .update_user_usecase import UpdateUserUsecase
 from .update_user_viewmodel import UpdateUserViewmodel
-from src.shared.domain.enums.groups_enum import GROUPS
 from src.shared.helpers.errors.controller_errors import MissingParameters
 from src.shared.helpers.errors.domain_errors import EntityError
 from src.shared.helpers.errors.usecase_errors import ForbiddenAction, InvalidCredentials, InvalidTokenError, NoItemsFound
@@ -26,27 +25,21 @@ class UpdateUserController:
             if request.data.get('email') is None:
                 raise MissingParameters('email')
 
-            if request.data.get('groups') is None:
-                raise MissingParameters('groups')
+            if request.data.get('systems') is None:
+                raise MissingParameters('systems')
             
             if request.data.get('enabled') is None:
                 raise MissingParameters('enabled')
             
-            for group in request.data.get('groups'):
-                if group not in [g.value for g in GROUPS]:
-                    raise EntityError('groups')
-            
             if request.data.get('role') is not None and request.data.get('role') not in [role.value for role in ROLE]:
                 raise EntityError('role')
             
-            groups_enum_list = [GROUPS[group_string] for group_string in request.data.get('groups')]
-
             user_data = {k: v for k, v in request.data.items() if k in self.mutable_fields}
 
             user = self.UpdateUserUsecase(
                 new_user_data=user_data,
                 user_email=request.data.get('email').lower(),
-                groups=groups_enum_list,
+                systems=request.data.get('systems'),
                 enabled=request.data.get('enabled'),
                 requester_role=requester_user.role
             )

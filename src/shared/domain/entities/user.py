@@ -1,8 +1,6 @@
 import abc
 import re
 from typing import List
-from src.shared.domain.enums.groups_enum import GROUPS
-
 from src.shared.domain.enums.role_enum import ROLE
 from src.shared.domain.enums.user_status_enum import USER_STATUS
 from src.shared.helpers.errors.domain_errors import EntityError
@@ -13,13 +11,13 @@ class User(abc.ABC):
     name: str
     email: str
     role: ROLE
-    groups: List[GROUPS]
+    systems: List[str]
     enabled: bool
     user_status: USER_STATUS
     ttl: int # time to live - timestamp
     MIN_NAME_LENGTH = 2
 
-    def __init__(self, name: str, email: str, role: ROLE, enabled: bool, user_status: USER_STATUS, ttl: int, groups: List[GROUPS] = [], user_id: str = None):
+    def __init__(self, name: str, email: str, role: ROLE, enabled: bool, user_status: USER_STATUS, ttl: int, systems: List[str] = [], user_id: str = None):
         if type(user_id) != str and user_id is not None:
             raise EntityError("user_id")
         self.user_id = user_id
@@ -36,9 +34,9 @@ class User(abc.ABC):
             raise EntityError("role")
         self.role = role
 
-        if type(groups) != list:
-            raise EntityError("groups")
-        self.groups = groups
+        if type(systems) != list:
+            raise EntityError("systems")
+        self.systems = systems
 
         if type(enabled) != bool:
             raise EntityError("enabled")
@@ -59,7 +57,7 @@ class User(abc.ABC):
             email=user['email'],
             name=user['name'].title(),
             role=ROLE[user['role']],
-            groups=[GROUPS[group] for group in user['groups']],
+            systems=user['systems'],
             enabled=user['enabled'],
             user_status=USER_STATUS[user['user_status']],
             ttl=user['ttl']
@@ -93,11 +91,11 @@ class User(abc.ABC):
             'email': self.email,
             'name': self.name,
             'role': self.role.value,
-            'groups': [group.value for group in self.groups],
+            'systems': self.systems,
             'enabled': self.enabled,
             'user_status': self.user_status.value,
             'ttl': self.ttl
         }
 
     def __repr__(self):
-        return f"User(user_id={self.user_id}, name={self.name}, email={self.email}, role={self.role}, groups={self.groups}, enabled={self.enabled}, user_status={self.user_status}, ttl={self.ttl})"
+        return f"User(user_id={self.user_id}, name={self.name}, email={self.email}, role={self.role}, systems={self.systems}, enabled={self.enabled}, user_status={self.user_status}, ttl={self.ttl})"

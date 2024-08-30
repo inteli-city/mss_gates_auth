@@ -1,6 +1,5 @@
 import pytest
 from src.modules.create_user.app.create_user_usecase import CreateUserUsecase
-from src.shared.domain.enums.groups_enum import GROUPS
 from src.shared.domain.enums.role_enum import ROLE
 from src.shared.domain.enums.user_status_enum import USER_STATUS
 from src.shared.helpers.errors.usecase_errors import ForbiddenAction, NoItemsFound
@@ -13,12 +12,12 @@ class Test_CreateUseUsecase:
         repo = UserRepositoryMock()
         usecase = CreateUserUsecase(repo)
         
-        user_response = usecase(email='teste@gmail3.com', name='Gabriel Godoy', role=ROLE.ADMIN_COLLABORATOR, groups=[GROUPS.GAIA], requester_role=ROLE.ADMIN_COLLABORATOR)
+        user_response = usecase(email='teste@gmail3.com', name='Gabriel Godoy', role=ROLE.ADMIN_COLLABORATOR, systems=["GAIA"], requester_role=ROLE.ADMIN_COLLABORATOR)
 
         assert user_response.role == ROLE.ADMIN_COLLABORATOR
         assert user_response.email == 'teste@gmail3.com'
         assert user_response.name == 'Gabriel Godoy'
-        assert user_response.groups == [GROUPS.GAIA]
+        assert user_response.systems == ["GAIA"]
         assert user_response.enabled == True
         assert user_response.user_status == USER_STATUS.CONFIRMED
     
@@ -27,6 +26,6 @@ class Test_CreateUseUsecase:
         usecase = CreateUserUsecase(repo)
     
         with pytest.raises(ForbiddenAction):
-            usecase(email='teste@gmail.com', name='Gabriel Godoy', role=ROLE.COLLABORATOR, groups=[GROUPS.GAIA], requester_role=ROLE.USER)
+            usecase(email='teste@gmail.com', name='Gabriel Godoy', role=ROLE.COLLABORATOR, systems=["GAIA"], requester_role=ROLE.USER)
 
         

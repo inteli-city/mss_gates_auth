@@ -11,7 +11,7 @@ class Test_CreateUserViewmodel:
             user=User(user_id="123",role=ROLE.COLLABORATOR,
             name='Gabriel Godoy',
             email='teste@gmail.com',
-            groups=[],
+            systems=[],
             enabled=True,
             user_status=USER_STATUS.FORCE_CHANGE_PASSWORD,
             ttl=123
@@ -24,7 +24,7 @@ class Test_CreateUserViewmodel:
                 'name': 'Gabriel Godoy',
                 'role': 'COLLABORATOR',
                 'email': 'teste@gmail.com',
-                'groups': [],
+                'systems': [],
                 'enabled': True,
                 'user_status': 'FORCE_CHANGE_PASSWORD',
                 'ttl': 123
@@ -38,7 +38,7 @@ class Test_CreateUserViewmodel:
         viewmodel = UserViewmodel(User(user_id="123",role=ROLE.COLLABORATOR,
                 name='Gabriel Godoy',
                 email='teste@gmail.com',
-                groups=[],
+                systems=[],
             enabled=True,
             user_status=USER_STATUS.FORCE_CHANGE_PASSWORD, ttl=123))
         
@@ -47,7 +47,7 @@ class Test_CreateUserViewmodel:
             'name': 'Gabriel Godoy',
             'role': 'COLLABORATOR',
             'email': 'teste@gmail.com',
-            'groups': [],
+            'systems': [],
             'enabled': True,
             'user_status': 'FORCE_CHANGE_PASSWORD',
             'ttl': 123

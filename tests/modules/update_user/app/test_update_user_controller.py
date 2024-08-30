@@ -16,13 +16,13 @@ class Test_UpdateUserController:
                 "name": repo.users[0].name,
                 "email": repo.users[0].email,
                 "custom:general_role": repo.users[0].role.value,
-                "cognito:groups": ','.join([group.value for group in repo.users[0].groups]),
+                "cognito:groups": ','.join([system for system in repo.users[0].systems]),
                 "custom:ttl": repo.users[0].ttl,
             },
             'name': 'Gabriel Godoy',
             'email': 'teste@gmail.com',
             'role': 'USER',
-            'groups': ['GAIA'],
+            'systems': ['GAIA'],
             'enabled': True
         })
 
@@ -35,7 +35,7 @@ class Test_UpdateUserController:
                 'name': 'Gabriel Godoy',
                 'role': 'USER',
                 'email': 'teste@gmail.com',
-                'groups': ['GAIA'],
+                'systems': ['GAIA'],
                 'enabled': True,
                 'user_status': 'CONFIRMED',
                 'ttl': 123
@@ -52,7 +52,7 @@ class Test_UpdateUserController:
             'name': 'Gabriel Godoy',
             'email': 'teste@gmail.com',
             'role': 'USER',
-            'groups': ['GAIA'],
+            'systems': ['GAIA'],
             'enabled': True
         })
 
@@ -71,12 +71,12 @@ class Test_UpdateUserController:
                 "name": repo.users[0].name,
                 "email": repo.users[0].email,
                 "custom:general_role": repo.users[0].role.value,
-                "cognito:groups": ','.join([group.value for group in repo.users[0].groups]),
+                "cognito:groups": ','.join([system for system in repo.users[0].systems]),
                 "custom:ttl": repo.users[0].ttl,
             },
             'name': 'Gabriel Godoy',
             'role': 'USER',
-            'groups': ['GAIA'],
+            'systems': ['GAIA'],
             'enabled': True
         })
 
@@ -95,13 +95,13 @@ class Test_UpdateUserController:
                 "name": repo.users[0].name,
                 "email": repo.users[0].email,
                 "custom:general_role": repo.users[0].role.value,
-                "cognito:groups": ','.join([group.value for group in repo.users[0].groups]),
+                "cognito:groups": ','.join([system for system in repo.users[0].systems]),
                 "custom:ttl": repo.users[0].ttl,
             },
             'email': 'teste@gmail.com',
             'name': 'Gabriel Godoy',
             'role': '123',
-            'groups': ['GAIA'],
+            'systems': ['GAIA'],
             'enabled': True
         })
 
@@ -110,7 +110,7 @@ class Test_UpdateUserController:
         assert response.status_code == 400
         assert response.body == "Parâmetro inválido: role"
     
-    def test_update_user_controller_no_groups(self):
+    def test_update_user_controller_no_systems(self):
         repo = UserRepositoryMock()
         usecase = UpdateUserUsecase(repo)
         controller = UpdateUserController(usecase)
@@ -120,7 +120,7 @@ class Test_UpdateUserController:
                 "name": repo.users[0].name,
                 "email": repo.users[0].email,
                 "custom:general_role": repo.users[0].role.value,
-                "cognito:groups": ','.join([group.value for group in repo.users[0].groups]),
+                "cognito:groups": ','.join([system for system in repo.users[0].systems]),
                 "custom:ttl": repo.users[0].ttl,
             },
             'name': 'Gabriel Godoy',
@@ -132,7 +132,7 @@ class Test_UpdateUserController:
         response = controller(request)
 
         assert response.status_code == 400
-        assert response.body == "Parâmetro ausente: groups"
+        assert response.body == "Parâmetro ausente: systems"
     
     def test_update_user_controller_groups_not_set(self):
         repo = UserRepositoryMock()
@@ -144,20 +144,20 @@ class Test_UpdateUserController:
                 "name": repo.users[0].name,
                 "email": repo.users[0].email,
                 "custom:general_role": repo.users[0].role.value,
-                "cognito:groups": ','.join([group.value for group in repo.users[0].groups]),
+                "cognito:groups": ','.join([system for system in repo.users[0].systems]),
                 "custom:ttl": repo.users[0].ttl,
             },
             'name': 'Gabriel Godoy',
             'role': 'USER',
             'email': 'teste@gmail.com',
-            'groups': ['123'],
+            'systems': ['123'],
             'enabled': True
         })
 
         response = controller(request)
 
         assert response.status_code == 400
-        assert response.body == "Parâmetro inválido: groups"
+        assert response.body == "Parâmetro inválido: systems"
     
     def test_update_user_controller_no_enabled(self):
         repo = UserRepositoryMock()
@@ -169,13 +169,13 @@ class Test_UpdateUserController:
                 "name": repo.users[0].name,
                 "email": repo.users[0].email,
                 "custom:general_role": repo.users[0].role.value,
-                "cognito:groups": ','.join([group.value for group in repo.users[0].groups]),
+                "cognito:groups": ','.join([system for system in repo.users[0].systems]),
                 "custom:ttl": repo.users[0].ttl,
             },
             'name': 'Gabriel Godoy',
             'role': 'USER',
             'email': 'teste@gmail.com',
-            'groups': ['GAIA']
+            'systems': ['GAIA']
         })
 
         response = controller(request)

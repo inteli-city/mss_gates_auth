@@ -1,6 +1,5 @@
 import datetime
 import json
-from src.shared.domain.enums.groups_enum import GROUPS
 from src.shared.domain.enums.role_enum import ROLE
 from src.shared.infra.dtos.user_api_gateway_dto import UserApiGatewayDTO
 from .create_user_viewmodel import CreateUserViewmodel
@@ -38,18 +37,14 @@ class CreateUserController:
             if request.data.get('email') is None:
                 raise MissingParameters('email')
 
-            if request.data.get('groups') is None:
-                raise MissingParameters('groups')
-                        
-            for group in request.data.get('groups'):
-                if group not in [g.value for g in GROUPS]:
-                    raise EntityError(f'groups')
+            if request.data.get('systems') is None:
+                raise MissingParameters('systems')
 
             created_user = self.createUserUsecase(
                 email=request.data.get('email').replace(' ', '').lower(), 
                 name=request.data.get('name'),
                 role=ROLE[request.data.get('role')],
-                groups=[GROUPS[group] for group in request.data.get('groups')],
+                systems=request.data.get('systems'),
                 requester_role=requester_user.role,
                 )
             viewmodel = CreateUserViewmodel(created_user)

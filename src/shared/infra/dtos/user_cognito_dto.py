@@ -1,7 +1,6 @@
 from enum import Enum
 from typing import List, Optional
 from src.shared.domain.entities.user import User
-from src.shared.domain.enums.groups_enum import GROUPS
 from src.shared.domain.enums.role_enum import ROLE
 from src.shared.domain.enums.user_status_enum import USER_STATUS
 
@@ -11,17 +10,17 @@ class UserCognitoDTO:
     name: str
     email: str
     role: ROLE
-    groups: List[GROUPS]
+    systems: List[str]
     enabled: bool
     user_status: USER_STATUS
     ttl: int
 
-    def __init__(self, user_id: str, email: str, name: str, role: ROLE, enabled: bool, ttl: int, user_status: USER_STATUS, groups: List[GROUPS] = []):
+    def __init__(self, user_id: str, email: str, name: str, role: ROLE, enabled: bool, ttl: int, user_status: USER_STATUS, systems: List[str] = []):
         self.user_id = user_id
         self.email = email
         self.name = name
         self.role = role
-        self.groups = groups
+        self.systems = systems
         self.enabled = enabled
         self.user_status = user_status
         self.ttl = ttl
@@ -33,7 +32,7 @@ class UserCognitoDTO:
             email=user.email,
             name=user.name,
             role=user.role,
-            groups=user.groups,
+            systems=user.systems,
             enabled=user.enabled,
             user_status=user.user_status,
             ttl=user.ttl
@@ -86,7 +85,7 @@ class UserCognitoDTO:
             email=self.email,
             name=self.name,
             role=self.role,
-            groups=self.groups,
+            systems=self.systems,
             enabled=self.enabled,
             user_status=self.user_status,
             ttl=self.ttl

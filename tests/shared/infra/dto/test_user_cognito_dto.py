@@ -1,6 +1,5 @@
 import datetime
 from src.shared.domain.entities.user import User
-from src.shared.domain.enums.groups_enum import GROUPS
 from src.shared.domain.enums.role_enum import ROLE
 from src.shared.domain.enums.user_status_enum import USER_STATUS
 from src.shared.infra.dtos.user_cognito_dto import UserCognitoDTO
@@ -10,7 +9,7 @@ from src.shared.infra.repositories.user_repository_mock import UserRepositoryMoc
 class Test_UserCognitoDTO:
 
     def test_from_entity(self):
-        user = User(user_id="1", email="joao@hotmail.com", name='João', role=ROLE.COLLABORATOR, groups=[GROUPS.GAIA], enabled=True, user_status=USER_STATUS.CONFIRMED, ttl=123)
+        user = User(user_id="1", email="joao@hotmail.com", name='João', role=ROLE.COLLABORATOR, systems=["GAIA"], enabled=True, user_status=USER_STATUS.CONFIRMED, ttl=123)
 
         user_cognito_dto = UserCognitoDTO.from_entity(user)
 
@@ -19,7 +18,7 @@ class Test_UserCognitoDTO:
             email=user.email,
             name=user.name,
             role=user.role,
-            groups=user.groups,
+            systems=user.systems,
             enabled=user.enabled,
             user_status=user.user_status,
             ttl=user.ttl
@@ -29,13 +28,13 @@ class Test_UserCognitoDTO:
         assert user_cognito_dto.email == user_cognito_dto_expected.email
         assert user_cognito_dto.name == user_cognito_dto_expected.name
         assert user_cognito_dto.role == user_cognito_dto_expected.role
-        assert user_cognito_dto.groups == user_cognito_dto_expected.groups
+        assert user_cognito_dto.systems == user_cognito_dto_expected.systems
         assert user_cognito_dto.enabled == user_cognito_dto_expected.enabled
         assert user_cognito_dto.user_status == user_cognito_dto_expected.user_status
         assert user_cognito_dto.ttl == user_cognito_dto_expected.ttl
 
     def test_from_entity_none(self):
-        user = User(user_id="1", email="joao@hotmail.com", name='João', role=ROLE.COLLABORATOR, groups=[GROUPS.GAIA], enabled=True, user_status=USER_STATUS.CONFIRMED, ttl=123)
+        user = User(user_id="1", email="joao@hotmail.com", name='João', role=ROLE.COLLABORATOR, systems=["GAIA"], enabled=True, user_status=USER_STATUS.CONFIRMED, ttl=123)
         user_cognito_dto = UserCognitoDTO.from_entity(user)
 
         user_cognito_dto_expected = UserCognitoDTO(
@@ -43,7 +42,7 @@ class Test_UserCognitoDTO:
             email=user.email,
             name=user.name,
             role=user.role,
-            groups=user.groups,
+            systems=user.systems,
             enabled=user.enabled,
             user_status=user.user_status,
             ttl=user.ttl
@@ -53,7 +52,7 @@ class Test_UserCognitoDTO:
         assert user_cognito_dto.email == user_cognito_dto_expected.email
         assert user_cognito_dto.name == user_cognito_dto_expected.name
         assert user_cognito_dto.role == user_cognito_dto_expected.role
-        assert user_cognito_dto.groups == user_cognito_dto_expected.groups
+        assert user_cognito_dto.systems == user_cognito_dto_expected.systems
         assert user_cognito_dto.enabled == user_cognito_dto_expected.enabled
         assert user_cognito_dto.user_status == user_cognito_dto_expected.user_status
         assert user_cognito_dto.ttl == user_cognito_dto_expected.ttl
@@ -107,7 +106,7 @@ class Test_UserCognitoDTO:
             email="joao@hotmail.com",
             name="joao",
             role=ROLE.COLLABORATOR,
-            groups=[GROUPS.GAIA],
+            systems=["GAIA"],
             enabled=True,
             user_status=USER_STATUS.CONFIRMED,
             ttl=123
@@ -133,7 +132,7 @@ class Test_UserCognitoDTO:
             email = repo.users[0].email,
             name = repo.users[0].name,
             role = repo.users[0].role,
-            groups = repo.users[0].groups,
+            systems = repo.users[0].systems,
             enabled = repo.users[0].enabled,
             user_status = repo.users[0].user_status,
             ttl = repo.users[0].ttl
@@ -145,7 +144,7 @@ class Test_UserCognitoDTO:
         assert user.email == repo.users[0].email
         assert user.name == repo.users[0].name
         assert user.role == repo.users[0].role
-        assert user.groups == repo.users[0].groups
+        assert user.systems == repo.users[0].systems
         assert user.enabled == repo.users[0].enabled
         assert user.user_status == repo.users[0].user_status
         assert user.ttl == repo.users[0].ttl

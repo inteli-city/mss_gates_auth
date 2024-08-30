@@ -10,7 +10,7 @@ class Test_UpdateUserViewmodel:
         viewmodel = UserViewmodel(User(user_id="123",role=ROLE.COLLABORATOR,
                 name='Gabriel Godoy',
                 email='teste@gmail.com',
-                groups=[],
+                systems=[],
                 enabled=True,
                 user_status=USER_STATUS.CONFIRMED, ttl=123))
         
@@ -19,7 +19,7 @@ class Test_UpdateUserViewmodel:
             'name': 'Gabriel Godoy',
             'role': 'COLLABORATOR',
             'email': 'teste@gmail.com',
-            'groups': [],
+            'systems': [],
             'enabled': True,
             'user_status': 'CONFIRMED',
             'ttl': 123
@@ -33,7 +33,7 @@ class Test_UpdateUserViewmodel:
                 User(user_id="123",role=ROLE.COLLABORATOR,
                 name='Gabriel Godoy',
                 email='teste@gmail.com',
-                groups=[],
+                systems=[],
                 enabled=True,
                 user_status=USER_STATUS.CONFIRMED, ttl=123)
             )
@@ -44,7 +44,7 @@ class Test_UpdateUserViewmodel:
                 'name': 'Gabriel Godoy',
                 'role': 'COLLABORATOR',
                 'email': 'teste@gmail.com',
-                'groups': [],
+                'systems': [],
                 'enabled': True,
                 'user_status': 'CONFIRMED',
                 'ttl': 123

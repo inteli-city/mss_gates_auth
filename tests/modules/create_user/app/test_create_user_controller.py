@@ -16,13 +16,13 @@ class Test_CreateUserController:
                 "name": repo.users[0].name,
                 "email": repo.users[0].email,
                 "custom:general_role": repo.users[0].role.value,
-                "cognito:groups": ','.join([group.value for group in repo.users[0].groups]),
+                "cognito:groups": ','.join([system for system in repo.users[0].systems]),
                 "custom:ttl": repo.users[0].ttl,
             },
             'name': 'Gabriel Godoy',
             'email': 'teste123@gmail.com',
             'role': 'COLLABORATOR',
-            'groups': ['GAIA']
+            'systems': ['GAIA']
         })
 
         response = controller(request)
@@ -32,7 +32,7 @@ class Test_CreateUserController:
         assert response.body['user']['name'] == 'Gabriel Godoy'
         assert response.body['user']['role'] == 'COLLABORATOR'
         assert response.body['user']['email'] == 'teste123@gmail.com'
-        assert response.body['user']['groups'] == ['GAIA']
+        assert response.body['user']['systems'] == ['GAIA']
         assert response.body['user']['enabled'] == True
         assert response.body['user']['user_status'] == 'CONFIRMED'
         assert response.body['user']['ttl'] == 123
@@ -46,7 +46,7 @@ class Test_CreateUserController:
             'name': 'Gabriel Godoy',
             'email': 'teste123@gmail.com',
             'role': 'COLLABORATOR',
-            'groups': ['GAIA']
+            'systems': ['GAIA']
         })
 
         response = controller(request)
@@ -64,12 +64,12 @@ class Test_CreateUserController:
                 "name": repo.users[0].name,
                 "email": repo.users[0].email,
                 "custom:general_role": repo.users[0].role.value,
-                "cognito:groups": ','.join([group.value for group in repo.users[0].groups]),
+                "cognito:groups": ','.join([system for system in repo.users[0].systems]),
                 "custom:ttl": repo.users[0].ttl,
             },
             'name': 'Gabriel Godoy',
             'email': 'teste@gmail.com',
-            'groups': ['GAIA']
+            'systems': ['GAIA']
         })
 
         response = controller(request)
@@ -88,13 +88,13 @@ class Test_CreateUserController:
                 "name": repo.users[0].name,
                 "email": repo.users[0].email,
                 "custom:general_role": repo.users[0].role.value,
-                "cognito:groups": ','.join([group.value for group in repo.users[0].groups]),
+                "cognito:groups": ','.join([system for system in repo.users[0].systems]),
                 "custom:ttl": repo.users[0].ttl,
             },
             'name': 'Gabriel Godoy',
             'role': '123',
             'email': 'teste@gmail.com',
-            'groups': ['GAIA']
+            'systems': ['GAIA']
         })
 
         response = controller(request)
@@ -113,12 +113,12 @@ class Test_CreateUserController:
                 "name": repo.users[0].name,
                 "email": repo.users[0].email,
                 "custom:general_role": repo.users[0].role.value,
-                "cognito:groups": ','.join([group.value for group in repo.users[0].groups]),
+                "cognito:groups": ','.join([system for system in repo.users[0].systems]),
                 "custom:ttl": repo.users[0].ttl,
             },
             'email': 'teste@gmail.com',
             'role': 'COLLABORATOR',
-            'groups': ['GAIA']
+            'systems': ['GAIA']
         })
 
         response = controller(request)
@@ -136,12 +136,12 @@ class Test_CreateUserController:
                 "name": repo.users[0].name,
                 "email": repo.users[0].email,
                 "custom:general_role": repo.users[0].role.value,
-                "cognito:groups": ','.join([group.value for group in repo.users[0].groups]),
+                "cognito:groups": ','.join([system for system in repo.users[0].systems]),
                 "custom:ttl": repo.users[0].ttl,
             },
             'name': 'Gabriel Godoy',
             'role': 'COLLABORATOR',
-            'groups': ['GAIA']
+            'systems': ['GAIA']
         })
 
         response = controller(request)
@@ -158,7 +158,7 @@ class Test_CreateUserController:
                 "name": repo.users[0].name,
                 "email": repo.users[0].email,
                 "custom:general_role": repo.users[0].role.value,
-                "cognito:groups": ','.join([group.value for group in repo.users[0].groups]),
+                "cognito:groups": ','.join([system for system in repo.users[0].systems]),
                 "custom:ttl": repo.users[0].ttl,
             },
             'name': 'Gabriel Godoy',
@@ -169,9 +169,9 @@ class Test_CreateUserController:
         response = controller(request)
 
         assert response.status_code == 400
-        assert response.body == "Parâmetro ausente: groups"
+        assert response.body == "Parâmetro ausente: systems"
     
-    def test_create_user_controller_group_not_valid(self):
+    def test_create_user_controller_systems_not_valid(self):
         repo = UserRepositoryMock()
         usecase = CreateUserUsecase(repo)
         controller = CreateUserController(usecase)
@@ -181,19 +181,19 @@ class Test_CreateUserController:
                 "name": repo.users[0].name,
                 "email": repo.users[0].email,
                 "custom:general_role": repo.users[0].role.value,
-                "cognito:groups": ','.join([group.value for group in repo.users[0].groups]),
+                "cognito:groups": ','.join([system for system in repo.users[0].systems]),
                 "custom:ttl": repo.users[0].ttl,
             },
             'name': 'Gabriel Godoy',
-            'email': 'teste@gmail.com',
+            'email': 'teste@teste.com',
             'role': 'COLLABORATOR',
-            'groups': ['123']
+            'systems': ['123']
         })
 
         response = controller(request)
 
         assert response.status_code == 400
-        assert response.body == "Parâmetro inválido: groups"
+        assert response.body == "Parâmetro inválido: systems"
     
     def test_create_user_controller_duplicated(self):
         repo = UserRepositoryMock()
@@ -205,13 +205,13 @@ class Test_CreateUserController:
                 "name": repo.users[0].name,
                 "email": repo.users[0].email,
                 "custom:general_role": repo.users[0].role.value,
-                "cognito:groups": ','.join([group.value for group in repo.users[0].groups]),
+                "cognito:groups": ','.join([system for system in repo.users[0].systems]),
                 "custom:ttl": repo.users[0].ttl,
             },
             'name': 'Gabriel Godoy',
             'email': 'teste@gmail.com',
             'role': 'COLLABORATOR',
-            'groups': ['GAIA']
+            'systems': ['GAIA']
         })
 
         response = controller(request)

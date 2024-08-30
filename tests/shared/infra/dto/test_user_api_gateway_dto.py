@@ -1,4 +1,3 @@
-from src.shared.domain.enums.groups_enum import GROUPS
 from src.shared.domain.enums.role_enum import ROLE
 from src.shared.infra.dtos.user_api_gateway_dto import UserApiGatewayDTO
 
@@ -21,8 +20,8 @@ class Test_UserApiGatewayDTO:
             name = "Gabriel Godoy",
             email = "gabriel.godoy@gmail.com",
             role = ROLE.ADMIN_COLLABORATOR,
-            groups = [GROUPS.GAIA, GROUPS.JUNDIAI],
+            systems = ["GAIA", "JUNDIAI"],
             ttl = 123
             )
-        
+                
         assert user_dto == expected_user_dto

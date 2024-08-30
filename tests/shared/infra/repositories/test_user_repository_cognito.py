@@ -1,5 +1,4 @@
 import pytest
-from src.shared.domain.enums.groups_enum import GROUPS
 from src.shared.infra.repositories.user_repository_cognito import UserRepositoryCognito
 
 
@@ -7,7 +6,7 @@ class Test_UserRepositoryCognito:
     @pytest.mark.skip("Can't test it locally")
     def test_list_groups(self):
         repo = UserRepositoryCognito()
-        repo.get_users_in_group(GROUPS.GAIA)
+        repo.get_users_in_group("GAIA")
 
     @pytest.mark.skip("Can't test it locally")
     def test_get_user_by_email(self):

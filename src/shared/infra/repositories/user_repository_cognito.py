@@ -7,7 +7,6 @@ import boto3
 from botocore.exceptions import ClientError
 
 from src.shared.domain.entities.user import User
-from src.shared.domain.enums.groups_enum import GROUPS
 from src.shared.domain.enums.role_enum import ROLE
 from src.shared.domain.repositories.user_repository_interface import IUserRepository
 from src.shared.environments import Environments
@@ -50,7 +49,7 @@ class UserRepositoryCognito(IUserRepository):
             all_users = [UserCognitoDTO.from_cognito(user).to_entity() for user in all_users]
 
             for user in all_users:
-                user.groups = self.get_groups_for_user(user.email)
+                user.systems = self.get_systems_for_user(user.email)
             
             return all_users
 
@@ -60,14 +59,14 @@ class UserRepositoryCognito(IUserRepository):
         except self.client.exceptions.InvalidParameterException as e:
             raise EntityError(e.response.get('Error').get('Message'))
     
-    def get_groups_for_user(self, email: str) -> List[GROUPS]:
+    def get_systems_for_user(self, email: str) -> List[str]:
         try:
             response = self.client.admin_list_groups_for_user(
                 Username=email,
                 UserPoolId=self.user_pool_id
             )
-            groups = [GROUPS[group.get('GroupName')] for group in response.get('Groups')]
-            return groups
+            systems = [system.get('GroupName') for system in response.get('Groups')]
+            return systems
         except self.client.exceptions.UserNotFoundException as e:
             raise EntityError(e.response.get('Error').get('Message'))
 
@@ -82,14 +81,14 @@ class UserRepositoryCognito(IUserRepository):
                 return None
 
             user = UserCognitoDTO.from_cognito(response).to_entity()
-            user.groups = self.get_groups_for_user(email)
+            user.systems = self.get_systems_for_user(email)
                 
             return user
 
         except self.client.exceptions.UserNotFoundException:
             return None
     
-    def create_user(self, email: str, name: str, role: ROLE, groups: List[GROUPS]) -> User:
+    def create_user(self, email: str, name: str, role: ROLE, systems: List[str]) -> User:
 
         # Obter a data e hora atual
         now = datetime.datetime.now()
@@ -131,11 +130,11 @@ class UserRepositoryCognito(IUserRepository):
                 DesiredDeliveryMediums=["EMAIL"],
                 UserAttributes=cognito_attributes)
             
-            for group in groups:
-                self.client.admin_add_user_to_group(
+            for system in systems:
+                self.client.admin_add_user_to_system(
                     UserPoolId=self.user_pool_id,
                     Username=email,
-                    GroupName=group.value
+                    GroupName=system
                 )
                 
             return self.get_user_by_email(email)
@@ -146,17 +145,17 @@ class UserRepositoryCognito(IUserRepository):
         except self.client.exceptions.InvalidParameterException as e:
             raise EntityError(e.response.get('Error').get('Message'))
     
-    def get_users_in_group(self, group: GROUPS) -> List[User]:
+    def get_users_in_system(self, system: str) -> List[User]:
         try:
             users = []
             response = self.client.list_users_in_group(
                 UserPoolId=self.user_pool_id,
-                GroupName=group.value
+                GroupName=system
             )
 
             for user in response.get('Users'):
                 user = UserCognitoDTO.from_cognito(user).to_entity()
-                user.groups = self.get_groups_for_user(user.email)
+                user.systems = self.get_systems_for_user(user.email)
                 users.append(user)
             
             return users
@@ -167,7 +166,7 @@ class UserRepositoryCognito(IUserRepository):
         except self.client.exceptions.InvalidParameterException as e:
             raise EntityError(e.response.get('Error').get('Message'))
     
-    def update_user(self, user_email: str, kvp_to_update: dict, addGroups: List[GROUPS] = None, removeGroups: List[GROUPS] = None, enabled: bool = None) -> User:
+    def update_user(self, user_email: str, kvp_to_update: dict, addSystems: List[str] = None, removeSystems: List[str] = None, enabled: bool = None) -> User:
         try:
 
             response = self.client.admin_update_user_attributes(
@@ -176,13 +175,13 @@ class UserRepositoryCognito(IUserRepository):
                 UserAttributes=[{'Name': UserCognitoDTO.TO_COGNITO_DICT[key], 'Value': value} for key, value in kvp_to_update.items()]
             )
 
-            if addGroups is not None:
-                for group in addGroups:
-                    self.add_user_to_group(user_email, group)
+            if addSystems is not None:
+                for system in addSystems:
+                    self.add_user_to_system(user_email, system)
             
-            if removeGroups is not None:
-                for group in removeGroups:
-                    self.remove_user_from_group(user_email, group)
+            if removeSystems is not None:
+                for system in removeSystems:
+                    self.remove_user_from_system(user_email, system)
 
 
             user = self.get_user_by_email(user_email)
@@ -226,12 +225,12 @@ class UserRepositoryCognito(IUserRepository):
         except self.client.exceptions.InvalidParameterException as e:
             raise EntityError(e.response.get('Error').get('Message'))
     
-    def add_user_to_group(self, user_email: str, group: GROUPS) -> None:
+    def add_user_to_system(self, user_email: str, system: str) -> None:
         try:
-            self.client.admin_add_user_to_group(
+            self.client.admin_add_user_to_system(
                 UserPoolId=self.user_pool_id,
                 Username=user_email,
-                GroupName=group.value
+                GroupName=system
             )
         except self.client.exceptions.ResourceNotFoundException as e:
             raise EntityError(e.response.get('Error').get('Message'))
@@ -239,12 +238,12 @@ class UserRepositoryCognito(IUserRepository):
         except self.client.exceptions.InvalidParameterException as e:
             raise EntityError(e.response.get('Error').get('Message'))
     
-    def remove_user_from_group(self, user_email: str, group: GROUPS) -> None:
+    def remove_user_from_system(self, user_email: str, system: str) -> None:
         try:
-            self.client.admin_remove_user_from_group(
+            self.client.admin_remove_user_from_system(
                 UserPoolId=self.user_pool_id,
                 Username=user_email,
-                GroupName=group.value
+                GroupName=system
             )
         except self.client.exceptions.ResourceNotFoundException as e:
             raise EntityError(e.response.get('Error').get('Message'))

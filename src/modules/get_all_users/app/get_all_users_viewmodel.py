@@ -1,17 +1,14 @@
 from typing import List
-
 from src.shared.domain.entities.user import User
-from src.shared.domain.enums.groups_enum import GROUPS
 from src.shared.domain.enums.role_enum import ROLE
 from src.shared.domain.enums.user_status_enum import USER_STATUS
-
 
 class UserViewmodel:
     user_id: str
     name: str
     email: str
     role: ROLE
-    groups: List[GROUPS]
+    systems: List[str]
     enabled: bool
     user_status: USER_STATUS
     ttl: int
@@ -21,7 +18,7 @@ class UserViewmodel:
         self.name = user.name
         self.email = user.email
         self.role = user.role
-        self.groups = user.groups
+        self.systems = user.systems
         self.enabled = user.enabled
         self.user_status = user.user_status
         self.ttl = user.ttl
@@ -32,7 +29,7 @@ class UserViewmodel:
             'name': self.name,
             'email': self.email,
             'role': self.role.value,
-            'groups': [group.value for group in self.groups],
+            'systems': self.systems,
             'enabled': self.enabled,
             'user_status': self.user_status.value,
             'ttl': self.ttl
