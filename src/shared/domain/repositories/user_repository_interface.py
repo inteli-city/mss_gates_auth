@@ -8,10 +8,6 @@ from src.shared.domain.enums.role_enum import ROLE
 class IUserRepository(ABC):
 
     @abstractmethod
-    def get_user_by_access_token(self, access_token: str) -> User:
-        pass
-
-    @abstractmethod
     def get_all_users(self) -> List[User]:
         pass
 

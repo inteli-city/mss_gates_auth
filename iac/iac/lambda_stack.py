@@ -44,6 +44,7 @@ class LambdaStack(Construct):
             method="POST",
             api_resource=api_gateway_resource,
             environment_variables=environment_variables,
+            authorizer=authorizer
         )
 
         self.get_all_users = self.create_lambda_api_gateway_integration(

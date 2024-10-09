@@ -26,22 +26,6 @@ class UserRepositoryCognito(IUserRepository):
         self.user_pool_id = Environments.get_envs().user_pool_id
         self.client_id = Environments.get_envs().client_id
     
-    def get_user_by_access_token(self, access_token: str) -> User:
-        try:
-            response = self.client.get_user(
-                AccessToken=access_token
-            )
-
-            if response.get('UserStatus') == 'UNCONFIRMED':
-                return None
-
-            user = UserCognitoDTO.from_cognito(response).to_entity()
-            user.systems = self.get_systems_for_user(user.email)
-            return user
-
-        except self.client.exceptions.NotAuthorizedException:
-            raise InvalidCredentials("token")
-    
     def get_all_users(self) -> List[User]:
         try:
             kwargs = {
