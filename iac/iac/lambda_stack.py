@@ -82,5 +82,6 @@ class LambdaStack(Construct):
             self.create_user,
             self.update_user,
             self.refresh_token,
-            self.get_all_users
+            self.get_all_users,
+            self.get_user
         ]
