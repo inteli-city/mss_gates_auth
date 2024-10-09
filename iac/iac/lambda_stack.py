@@ -39,6 +39,12 @@ class LambdaStack(Construct):
                                                  compatible_runtimes=[lambda_.Runtime.PYTHON_3_9]
                                                  )
         
+        self.get_user = self.create_lambda_api_gateway_integration(
+            module_name="get_user",
+            method="GET",
+            api_resource=api_gateway_resource,
+            environment_variables=environment_variables,
+        )
 
         self.get_all_users = self.create_lambda_api_gateway_integration(
             module_name="get_all_users",

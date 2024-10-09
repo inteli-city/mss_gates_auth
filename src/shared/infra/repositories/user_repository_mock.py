@@ -20,6 +20,9 @@ class UserRepositoryMock(IUserRepository):
 
         self.systems = ["GAIA", "JUNDIAI", "FORMULARIOS"]
     
+    def get_user_by_access_token(self, access_token: str) -> User:
+        pass
+    
     def get_all_users(self) -> List[User]:
         return self.users
 
