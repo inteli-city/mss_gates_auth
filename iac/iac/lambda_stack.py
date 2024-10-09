@@ -41,7 +41,7 @@ class LambdaStack(Construct):
         
         self.get_user = self.create_lambda_api_gateway_integration(
             module_name="get_user",
-            method="GET",
+            method="POST",
             api_resource=api_gateway_resource,
             environment_variables=environment_variables,
         )
